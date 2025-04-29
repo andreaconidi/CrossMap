@@ -1,0 +1,21 @@
+#get the chain file from UCSC
+wget https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz
+
+#input_hg19.bed file as source of genomic coordinates to be lift over
+
+CrossMap bed hg19ToHg38.over.chain.gz input_hg19.bed > output_hg38.bed
+
+#check output
+head output_hg38.bed 
+
+# for multiple bed files
+
+for file in *.bed; do
+CrossMap bed hg19ToHg38.over.chain.gz "$file" > "${file%.bed}_hg38.bed"
+done
+
+#if some regions failed to convert they will appear in the unconverted list:
+cat output_hg39.bed.unmap
+
+
+#use left_join (R) pd.merge with how="left" (Python/Pandas) 
